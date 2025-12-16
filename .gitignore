@@ -10,3 +10,14 @@ env/
 # ignore IDE specific files
 .vscode/
 .idea/
+
+# ignore test reports and logs
+reports/
+logs/
+# ignore distribution/build folders
+dist/
+build/
+
+# ignore video/screenshots from tests
+videos/
+screenshots/
