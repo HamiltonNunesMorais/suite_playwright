@@ -1,10 +1,7 @@
 name: Playwright Tests
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+  workflow_dispatch:   # execução manual pelo GitHub Actions
 
 jobs:
   test:
@@ -24,10 +21,20 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-
-      - name: Instalar Playwright browsers
-        run: |
           python -m playwright install --with-deps
 
       - name: Rodar testes
+        env:
+          BASE_URL: ${{ secrets.BASE_URL }}
+          EMAIL: ${{ secrets.EMAIL }}
+          PASSWORD: ${{ secrets.PASSWORD }}
         run: pytest --maxfail=1 --disable-warnings -q
+
+      - name: Upload vídeos/screenshots
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-artifacts
+          path: |
+            videos/
+            screenshots/
